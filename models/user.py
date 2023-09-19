@@ -25,6 +25,9 @@ class User(BaseModel, Base):
         class Place. If the User object is deleted, all linked Place objects
         must be automatically deleted. The reference from a Place object
         to its User should be named "user".
+        reviews (relationship): this attribute represents a relationship with
+        the class Review. If the user object is deleted, all linked Review
+        objects will be automatically deleted.
 
     Args:
         BaseModel (class): the BaseModel class.
@@ -38,3 +41,4 @@ class User(BaseModel, Base):
      first_name = Column(String(128), nullable=True)
      last_name = Column(String(128), nullable=True)
      places = relationship('Place', back_populates='user', cascade='all, delete-orphan')
+     reviews = relationship('Review', back_populates='user', cascade='all, delete-orphan')
