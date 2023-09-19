@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from models import storage
 
 class Place(BaseModel, Base):
     """
@@ -32,6 +33,9 @@ class Place(BaseModel, Base):
         a float; and the attribute can be null.
         longitude (float): the attribute represents a column containing
         a float. The attribute can be null.
+        reviews (relationship): this attribute represents a relationship with
+        the class Review. If the user object is deleted, all linked Review
+        objects will be automatically deleted.
     Args:
         BaseModel (class): the BaseModel class.
         Base (class): the declarative Base class from SQLAlchemy.
@@ -49,4 +53,20 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    reviews = relationship('Review', back_populates='place', cascade='all,
+            delete-orphan')
     amenity_ids = []
+
+    if storage.TypeStorage == 'db':
+        @property
+        def reviews(self):
+            """This method gets the attribute to return the list of Review
+            instances with place_id equals to the current place.id for
+            DBStorage.
+            """
+            reviews_list = []
+            reviews_dict = storage.all(Review)
+            for review in reviews_dict.values():
+                if review.place_id == self.id:
+                    reviews_list.append(review)
+            return reviews_list
