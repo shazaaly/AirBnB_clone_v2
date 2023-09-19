@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 
+
 class Review(BaseModel):
     """
     Definition of the Review class for the reviews table in the database.
