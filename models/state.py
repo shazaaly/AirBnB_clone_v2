@@ -18,7 +18,6 @@ class State(BaseModel, Base):
         cities = relationship('City', back_populates='state',
                               cascade='all, delete-orphan')
     else:
-        print('no access to cities')
 
         @property
         def cities(self):

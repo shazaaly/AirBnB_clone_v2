@@ -4,32 +4,33 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models import storage
+import os
 
 
 class Place(BaseModel, Base):
     """
     The definition of the Place class for the places table in the database.
     """
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        __tablename__ = 'places'
 
-    __tablename__ = 'places'
+        city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+        name = Column(String(128), nullable=False)
+        description = Column(String(1024), nullable=True)
+        number_rooms = Column(Integer, nullable=False, default=0)
+        number_bathrooms = Column(Integer, nullable=False, default=0)
+        max_guest = Column(Integer, nullable=False, default=0)
+        price_by_night = Column(Integer, nullable=False, default=0)
+        latitude = Column(Float, nullable=True)
+        longitude = Column(Float, nullable=True)
 
-    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
-    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
-    name = Column(String(128), nullable=False)
-    description = Column(String(1024), nullable=True)
-    number_rooms = Column(Integer, nullable=False, default=0)
-    number_bathrooms = Column(Integer, nullable=False, default=0)
-    max_guest = Column(Integer, nullable=False, default=0)
-    price_by_night = Column(Integer, nullable=False, default=0)
-    latitude = Column(Float, nullable=True)
-    longitude = Column(Float, nullable=True)
+        reviews = relationship('Review', back_populates='place',
+                               cascade='all, delete-orphan')
 
-    reviews = relationship('Review', back_populates='place',
-                           cascade='all, delete-orphan')
+    # amenity_ids = []
+    else:
 
-    amenity_ids = []
-
-    if storage.TypeStorage == 'db':
         @property
         def reviews(self):
             """This method gets the attribute to return the list of Review
