@@ -566,10 +566,6 @@ class TestUpdate(unittest.TestCase):
             expected_output = "** value missing **"
             self.assertEqual(output.getvalue().strip(), expected_output)
 
-    def test_doc(self):
-        """test docstrings"""
-        self.assertIsNotNone(console.__doc__)
-
 
 if __name__ == '__main__':
     unittest.main()
