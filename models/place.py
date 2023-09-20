@@ -5,9 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 from models.amenity import Amenity
 from models.review import Review
-from os import getenv
-
-storage_type = getenv("HBNB_TYPE_STORAGE")
+import os
 
 place_amenity = Table(
     "place_amenity",
@@ -30,10 +28,10 @@ place_amenity = Table(
 
 
 class Place(BaseModel, Base):
-    """A place to stay"""
+    """class Place"""
 
     __tablename__ = "places"
-    if storage_type == "db":
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
         user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
         name = Column(String(128), nullable=False)
@@ -47,7 +45,6 @@ class Place(BaseModel, Base):
         amenities = relationship("Amenity", secondary=place_amenity,
                                  viewonly=False,
                                  back_populates="place_amenities")
-        reviews = relationship('Review', cascade="all,delete", backref="place")
 
     else:
         city_id = ""
@@ -66,26 +63,16 @@ class Place(BaseModel, Base):
         def amenities(self):
             """Getter docuemnt"""
             from models import storage
-            amenitiesList = []
-            amenitiesAll = storage.all(Amenity)
-            for amenity in amenitiesAll.values():
-                if amenity.id in self.amenity_ids:
-                    amenitiesList.append(amenity)
-            return amenitiesList
+            amenities = []
+            stored = storage.all(Amenity)
+            for amenity in stored.values():
+                amenities.append(amenity)
 
-        @property
-        def reviews(self):
-            """Getter document"""
-            from models import storage
-            reviewsList = []
-            reviewsAll = storage.all(Review)
-            for review in reviewsAll.values():
-                if review.place_id in self.id:
-                    reviewsList.append(review)
-            return reviewsList
+            return amenities
 
         @amenities.setter
-        def amenities(self, amenity):
-            """Setter document"""
-            if isinstance(amenity, Amenity):
-                self.amenity_ids.append(amenity.id)
+        def amenities(self, obj):
+            """Setter to set amenities"""
+            cls = 'Amenity'
+            if isinstance(obj, cls):
+                self.amenity_ids.append(obj.id)
