@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import os
+from models.amenity import Amenity
 
 
 place_amenity = Table("place_amenity", Base.metadata,
@@ -70,7 +71,6 @@ class Place(BaseModel, Base):
             to the attribute amenity_ids.
             This method should accept only Amenity object, otherwise,
             do nothing."""
-            cls = 'Amenity'
 
-            if isinstance(amenity, cls):
+            if isinstance(amenity, Amenity):
                 self.amenity_ids.append(amenity.id)
