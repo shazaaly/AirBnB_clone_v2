@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This module to change storage type directly by
 using an environment variable"""
-from models import *
 
 
 import os
