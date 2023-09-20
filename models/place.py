@@ -5,10 +5,9 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models import storage
 import os
-metadata = Base.metadata
 
 
-place_amenity = Table("place_amenity",
+place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
                              ForeignKey("places.id"),
                              primary_key=True,
