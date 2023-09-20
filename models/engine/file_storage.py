@@ -43,7 +43,6 @@ class FileStorage:
                 if obj == v:
                     key = k
             del FileStorage.__objects[key]
-            self.save()
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
