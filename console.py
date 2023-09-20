@@ -140,15 +140,12 @@ class HBNBCommand(cmd.Cmd):
             attr_value = attr_value.replace('"', r'\"')
             attr_value = attr_value.replace('_', ' ')
 
-        try:
             if '.' in attr_value:
                 attr_value = float(attr_value)
             elif attr_value.isdigit():
                 attr_value = int(attr_value)
-        except ValueError:
-            # Handle the case where conversion to float or int fails
-            # Set the attribute in new_instance with the original value
-            setattr(new_instance, attr_name, attr_value)
+            else:
+                setattr(new_instance, attr_name, attr_value)
 
         new_instance.save()
         print(new_instance.id)
