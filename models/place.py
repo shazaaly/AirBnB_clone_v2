@@ -61,7 +61,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
-            """Getter docuemnt"""
+            """ get amenities"""
             from models import storage
             amenities = []
             stored = storage.all(Amenity)
