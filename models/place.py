@@ -57,32 +57,20 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """Getter return list of amenities"""
-            return self.amenities_ids
+            import models
+            amenitiesList = []
+            stored = models.storage.all()
+            for amenity in stored.values():
+                amenitiesList.append(amenity)
+                return amenitiesList
 
         @amenities.setter
-        def amenities(self, obj=None):
+        def amenities(self, amenity):
             """ handles append method for adding an Amenity.id
             to the attribute amenity_ids.
             This method should accept only Amenity object, otherwise,
             do nothing."""
-
             cls = 'Amenity'
 
-            if obj is not None and isinstance(obj, cls):
-                self.amenities_ids.append(obj.id)
-
-    #     reviews = relationship('Review', back_populates='place',
-    #                            cascade='all, delete-orphan')
-
-    #     @property
-    #     def reviews(self):
-    #         """This method gets the attribute to return the list of Review
-    #         instances with place_id equals to the current place.id for
-    #         DBStorage.
-    #         """
-    #         reviews_list = []
-    #         reviews_dict = storage.all('Review')
-    #         for review in reviews_dict.values():
-    #             if review.place_id == self.id:
-    #                 reviews_list.append(review)
-    #         return reviews_list
+            if isinstance(amenity, cls):
+                self.amenity_ids.append(amenity.id)
