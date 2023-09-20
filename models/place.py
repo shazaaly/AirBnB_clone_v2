@@ -1,10 +1,22 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models import storage
 import os
+metadata = Base.metadata
+
+
+place_amenity = Table("place_amenity",
+                      Column("place_id", String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True,
+                             nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -24,11 +36,38 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
+    amenities_ids = []
+
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        amenities = relationship(
+            'Amenity', secondary='place_amenity',
+            back_populates='places', viewonly=False)
+
+    else:
+        """Getter attribute amenities that returns
+        the list of Amenity instances based on the
+        attribute amenity_ids that contains all
+        Amenity.id linked to the Place"""
+
+        @property
+        def amenities(self):
+            """Getter return list of amenities"""
+            return self.amenities_ids
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            """ handles append method for adding an Amenity.id
+            to the attribute amenity_ids.
+            This method should accept only Amenity object, otherwise,
+            do nothing."""
+
+            cls = 'Amenity'
+
+            if obj is not None and isinstance(obj, cls):
+                self.amenities_ids.append(obj.id)
+
     #     reviews = relationship('Review', back_populates='place',
     #                            cascade='all, delete-orphan')
-
-    # # amenity_ids = []
-    # else:
 
     #     @property
     #     def reviews(self):
