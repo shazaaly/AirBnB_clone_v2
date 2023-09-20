@@ -70,6 +70,17 @@ class Place(BaseModel, Base):
 
             return amenities
 
+        @property
+        def reviews(self):
+            """Get reviews"""
+            from models import storage
+            reviews_List = []
+            stored = storage.all(Review)
+            for review in stored.values():
+                if review.place_id in self.id:
+                    reviews_List.append(review)
+            return reviews_List
+
         @amenities.setter
         def amenities(self, obj):
             """Setter to set amenities"""
