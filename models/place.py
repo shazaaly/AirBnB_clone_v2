@@ -38,9 +38,9 @@ class Place(BaseModel, Base):
     amenities_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        amenities = relationship(
-            'Amenity',  secondary=place_amenity,
-            back_populates='place_amenities', viewonly=False)
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
 
     else:
         """Getter attribute amenities that returns
