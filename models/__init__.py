@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 """This module to change storage type directly by
 using an environment variable"""
-
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.user import User
+from models.amenity import Amenity
 
 import os
 
