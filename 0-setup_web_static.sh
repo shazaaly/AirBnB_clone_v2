@@ -12,13 +12,10 @@ fi
   # Create necessary folders
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
-sudo mkdir -p /data/web_static/releases/
-sudo mkdir -p /data/web_static/
-sudo mkdir -p /data/
 
 sudo chown -R ubuntu:ubuntu /data/
 
-echo "This is a primer HTML" | sudo tee /data/web_static/releases/test/index.html
+echo " Holberton School" > /data/web_static/releases/test/index.html
 
 # Create a symbolic link /data/web_static/current linked to the /data/web_static/releases/test/ folder
 # check if existd =>remove and recreate
@@ -32,14 +29,18 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 echo "server {
     listen 80;
     server_name example.com ;
-    location /hbnb_static/ {
+	 root /var/www/html;
+    index  index.html index.htm;
+
+    location /hbnb_static {
         alias /data/web_static/current/;
+		index.html;
     }
     location / {
         # Your other configuration directives, if any
     }
-}" | sudo tee /etc/nginx/sites-available/default
+}" > /etc/nginx/sites-available/default
 
-sudo nginx -t
+# sudo nginx -t
 sudo service nginx restart
 
