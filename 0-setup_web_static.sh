@@ -3,8 +3,7 @@
 # run script on both web servers.
 # checks if Nginx is not installed or not executable
 sudo apt update
-sudo apt install nginx
-sudo service nginx start
+sudo apt -y install nginx
 
   # Create necessary folders
 sudo mkdir -p /data/web_static/releases/test/
@@ -21,8 +20,8 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 # Update Nginx configuration to serve /data/web_static/current/ at /hbnb_static
 echo "server {
     listen 80;
-    server_name example.com ;
-	 root /var/www/html;
+    server_name _;
+         root /var/www/html;
     index  index.html index.htm;
 
     location /hbnb_static {
@@ -31,8 +30,7 @@ echo "server {
     location / {
         # Your other configuration directives, if any
     }
-}" | sudo tee /etc/nginx/sites-available/default > /dev/null
+}" >  /etc/nginx/sites-available/default
 
 # sudo nginx -t
 sudo service nginx restart
-
