@@ -1,9 +1,29 @@
 #!/usr/bin/python3
 # Fabfile to distribute an archive to a web server.
 import os.path
-from fabric.api import env, put, run
+from datetime import datetime
+from fabric.api import env, put, run, local
 
 env.hosts = ["104.196.168.90", "35.196.46.172"]
+
+
+def do_pack():
+    """generates a .tgz archive """
+
+    dt = datetime.utcnow()
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+
+    result = local("mkdir -p versions")
+    if result.failed:
+        return None
+
+    # create a compressed archive file in the .tgz format
+    result = local("tar -czf {} web_static".format(file))
+    if result.failed:
+        return None
+
+    return file
 
 
 def do_deploy(archive_path):
