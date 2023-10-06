@@ -9,13 +9,13 @@ sudo apt -y install nginx
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
 
-sudo chown -R ubuntu:ubuntu /data/
+
 
 echo "Holberton School" > /data/web_static/releases/test/index.html
 
 # Create a symbolic link /data/web_static/current linked to the /data/web_static/releases/test/ folder
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-
+sudo chown -R ubuntu:ubuntu /data/
 
 # Update Nginx configuration to serve /data/web_static/current/ at /hbnb_static
 echo "server {
@@ -30,7 +30,7 @@ echo "server {
     location / {
         # Your other configuration directives, if any
     }
-}" >  /etc/nginx/sites-available/default
+}" > /etc/nginx/sites-available/default
 
 # sudo nginx -t
 sudo service nginx restart
