@@ -1,46 +1,43 @@
 #!/usr/bin/python3
-"""Distributes an archive to your web servers, using the function do_deploy"""
-
-from fabric.api import put, run, env
+# Fabfile to distribute an archive to a web server.
 import os.path
+from fabric.api import env
+from fabric.api import put
+from fabric.api import run
 
-env.hosts = ["35.168.7.107", "100.25.140.120"]
-env.user = "ubuntu"
+env.hosts = ["104.196.168.90", "35.196.46.172"]
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to web servers"""
-    if not os.path.isfile(archive_path):
+    """Distributes an archive to a web server.
+    """
+    if os.path.isfile(archive_path) is False:
         return False
+    file = archive_path.split("/")[-1]
+    name = file.split(".")[0]
 
-    # Extract the filename and folder name without extension
-    file_name = os.path.basename(archive_path)
-    folder_name = file_name.split(".")[0]
-
-    # Upload the archive to /tmp/ directory on the web servers
-    if put(archive_path, "/tmp/{}".format(file_name)).failed:
+    if put(archive_path, "/tmp/{}".format(file)).failed is True:
         return False
-
-    # Create the target release directory
-    if run("mkdir -p /data/web_static/releases/{}".format(folder_name)).failed:
+    if run("rm -rf /data/web_static/releases/{}/".
+           format(name)).failed is True:
         return False
-
-    # Uncompress the archive into the release directory
-    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}"
-           .format(file_name, folder_name)).failed:
+    if run("mkdir -p /data/web_static/releases/{}/".
+           format(name)).failed is True:
         return False
-
-    # Delete the archive from /tmp/
-    if run("rm /tmp/{}".format(file_name)).failed:
+    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
+           format(file, name)).failed is True:
         return False
-
-    # Remove the current symlink if it exists
-    if run("rm -f /data/web_static/current").failed:
+    if run("rm /tmp/{}".format(file)).failed is True:
         return False
-
-    # Create a new symbolic link
-    if run("ln -s /data/web_static/releases/{} /data/web_static/current"
-           .format(folder_name)).failed:
+    if run("mv /data/web_static/releases/{}/web_static/* "
+           "/data/web_static/releases/{}/".format(name, name)).failed is True:
         return False
-
+    if run("rm -rf /data/web_static/releases/{}/web_static".
+           format(name)).failed is True:
+        return False
+    if run("rm -rf /data/web_static/current").failed is True:
+        return False
+    if run("ln -s /data/web_static/releases/{}/ /data/web_static/current".
+           format(name)).failed is True:
+        return False
     return True
