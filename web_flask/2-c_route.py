@@ -27,6 +27,7 @@ def hello_hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def dynamic_route(text):
     """Displays 'C' followed by the value of <text>."""
+    text = text.replace("_", " ")
     return f"C {text}"
 
 
