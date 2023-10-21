@@ -24,9 +24,10 @@ def hello_hbnb():
     return "HBNB"
 
 
-@app.route('/c/<path:topic>', strict_slashes=False)
-def dynamic_route(topic):
-    return f"C {topic}"
+@app.route('/c/<text>', strict_slashes=False)
+def dynamic_route(text):
+    """Displays 'C' followed by the value of <text>."""
+    return f"C {text}"
 
 
 if __name__ == "__main__":
