@@ -5,6 +5,10 @@ from sqlalchemy import Column, String, Integer
 from models.base_model import BaseModel
 from sqlalchemy.ext.declarative import declarative_base
 import os
+import models
+from models.city import City  # Import the City class
+import shlex
+
 
 from models.base_model import Base
 
@@ -15,18 +19,20 @@ class State(BaseModel, Base):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
 
         name = Column(String(128), nullable=False)
-        cities = relationship('City', back_populates='state',
+        cities = relationship('City', backref='state',
                               cascade='all, delete-orphan')
     else:
-
         @property
         def cities(self):
-            """Returns the list of City instances
-            with state_id equals to the current State.id
-            """
-            import models
-            stored = models.storage.all()
-            for k, v in stored.items():
-                if v[__class__] == 'State':
-                    return [city for city in self.cities if
-                            city.state_id == self.id]
+            var = models.storage.all()
+            lista = []
+            result = []
+            for key in var:
+                city = key.replace('.', ' ')
+                city = shlex.split(city)
+                if (city[0] == 'City'):
+                    lista.append(var[key])
+            for elem in lista:
+                if (elem.state_id == self.id):
+                    result.append(elem)
+            return (result)
