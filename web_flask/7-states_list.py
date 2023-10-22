@@ -13,6 +13,7 @@ H1 tag: “States”
 """
 from flask import Flask, render_template
 from models import storage
+from models.state import State
 
 
 app = Flask(__name__)
@@ -21,7 +22,7 @@ app = Flask(__name__)
 @app.route("/states_list", strict_slashes=False)
 def states_list():
     """Displays cities per state"""
-    states = storage.all("State")
+    states = storage.all(State)
     return render_template("7-states_list.html", states=states)
 
 
@@ -31,5 +32,6 @@ def teardown_context(ctx):
     storage.close()
 
 
+app.debug = True
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
