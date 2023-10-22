@@ -26,12 +26,14 @@ def states_list():
     return render_template("7-states_list.html", states=states)
 
 
+app.debug = True
+
+
 @app.teardown_appcontext
 def teardown_context(ctx):
     """Displays cities per state"""
     storage.close()
 
 
-app.debug = True
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
