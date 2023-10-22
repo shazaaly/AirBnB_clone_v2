@@ -19,10 +19,19 @@ from models.state import State
 app = Flask(__name__)
 
 
+@app.route('/', strict_slashes=False)
+def home():
+    """A function that serves as the home route of the application.
+    Returns:
+        str: The greeting message "Hello HBNB!".
+    """
+    return "Hello HBNB!"
+
+
 @app.route("/states_list", strict_slashes=False)
 def states_list():
     """Displays cities per state"""
-    states = storage.all(State)
+    states = storage.all(State).values()
     return render_template("7-states_list.html", states=states)
 
 
