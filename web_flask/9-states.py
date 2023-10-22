@@ -33,6 +33,7 @@ def state_id(id):
     for state in states:
         if state.id == id:
             return render_template("9-states.html", state=state)
+    return render_template("9-states.html")
 
 
 app.debug = True
