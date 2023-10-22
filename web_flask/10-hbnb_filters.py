@@ -36,6 +36,9 @@ def state_id(id):
     return render_template("9-states.html")
 
 
+app.debug = True
+
+
 @app.teardown_appcontext
 def teardown_context(ctx):
     """Displays cities per state"""
