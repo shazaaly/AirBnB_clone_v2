@@ -18,7 +18,7 @@ def hbnb_filters():
     """display a HTML page like 6-index.html"""
     states = storage.all(State)
     amenities = storage.all(Amenity)
-    return render_template("10-hbnb_filters.py", states=states,
+    return render_template("10-hbnb_filters.html", states=states,
                            amenities=amenities)
 
 
