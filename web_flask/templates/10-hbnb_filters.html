@@ -1,25 +1,27 @@
+
 <!DOCTYPE html>
-<HTML lang="en">
-  <HEAD>
-    <META charset="utf-8">
-    <TITLE>AirBnB clone</TITLE>
-    <LINK rel="stylesheet" href="static/styles/reset.css">
-    <LINK rel="stylesheet" href="static/styles/4-common.css">
-    <LINK rel="stylesheet" href="static/styles/3-header.css">
-    <LINK rel="stylesheet" href="static/styles/3-footer.css">
-    <LINK rel="stylesheet" href="static/styles/6-filters.css">
-    <link rel="icon"  type="image/png" href="static/images/icon.png">
-    </HEAD>
+<html lang="en">
+	<head>
+		<title>AirBnB clone</title>
 
-  <BODY>
-    <HEADER></HEADER>
+		<link rel="shortcut icon" href="static/images/icon.ico" >
 
-    <DIV class="container">
-      <SECTION class="filters">
-        <DIV class="locations">
-          <H3>States</H3>
+		<link rel="stylesheet" href="static/styles/4-common.css"/>
+		<link rel="stylesheet" href="static/styles/3-header.css"/>
+		<link rel="stylesheet" href="static/styles/3-footer.css"/>
+		<link rel="stylesheet" href="static/styles/6-filters.css"/>
+	</head>
+    <body>
+		<header>
+			<div id="header_logo"></div>
+		</header>
+		<div class="container">
+			<section class="filters">
+				<button>Search</button>
+				<div class="locations">
+					<h3>States</h3>
           <H4>&nbsp;</H4>
-          <DIV class="popover">
+          <div class="popover">
             <UL>
             {% for state in states.values()|sort(attribute="name") %}
               <LI><STRONG>{{ state.name }}</STRONG>
@@ -31,9 +33,9 @@
               </LI>
             {% endfor %}
             </UL>
-          </DIV>
-
-        </DIV><DIV class="amenities">
+          </div>
+				</div>
+        <div class="amenities">
           <H3>Amenities</H3>
           <H4>&nbsp;</H4>
           <UL class="popover">
@@ -41,13 +43,12 @@
             <LI>{{ amenity.name }}</LI>
           {% endfor %}
           </UL>
-        </DIV>
-        <BUTTON>Search</BUTTON>
-      </SECTION>
-    </DIV>
+        </div>
 
-    <FOOTER>
-      Holberton School
-    </FOOTER>
-  </BODY>
-</HTML>
+			</section>
+		</div>
+		<footer>
+			<p>Holberton School</p>
+		</footer>
+	</body>
+</html>
