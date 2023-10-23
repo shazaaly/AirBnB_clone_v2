@@ -7,7 +7,8 @@
 	border-radius: 4px;
 }
 
-.locations {
+.locations,
+.amenities {
 	display: inline;
 	vertical-align: middle;
 	float: left;
@@ -46,14 +47,17 @@
 	display: inline-block;
 }
 
+.amenities:hover .popover {
+	display: inline-block;
+}
+
 .filter_amenities:hover .popover {
 	display: inline-block;
 }
 
 ul {
 	list-style-type: none;
-	padding: 0px;
-	padding-bottom: 20px;
+
 }
 
 li {}
